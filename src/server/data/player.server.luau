@@ -10,7 +10,7 @@ export type PlayerData = data.PlayerData
 
 local player_data_store: skilift.Store<PlayerData> = data.player_store
 
-type DataCache = charm.Atom<{[number]: skilift.Session<PlayerData>}>
+type DataCache = charm.Atom<{PlayerData}>
 
 local player_data_cache: DataCache = data.player_cache :: DataCache
 local player_sessions: {skilift.Session<PlayerData>} = data.player_sessions
@@ -22,8 +22,8 @@ local function load_player_session(player: Player): ()
     player_session:userid(key) -- for GDPR metadata
 
     player_session:updated(function(updated_data: PlayerData): ()
-        player_data_cache(function(cache: {[number]: skilift.Session<PlayerData>}): {[number]: skilift.Session<PlayerData>}
-            cache[key] = player_session
+        player_data_cache(function(cache: {PlayerData}): {PlayerData}
+            cache[key] = updated_data
             return cache
         end)
     end)
