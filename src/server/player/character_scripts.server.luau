@@ -18,6 +18,7 @@ Players.PlayerAdded:Connect(function(player: Player): ()
         for _, script in scripts do
              script = script:Clone()
              script.Parent = character
+             script.Enabled = true
         end
     end)
 end)
