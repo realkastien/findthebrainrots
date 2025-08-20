@@ -116,7 +116,7 @@ local player_sessions: {[number]: skilift.Session<PlayerData>} = {}
 local is_production: boolean = not RunService:IsStudio()
 
 local data: {
-    player_cache: charm.Atom<PlayerData>,
+    player_cache: charm.Atom<{PlayerData}>,
     player_sessions: {[number]: skilift.Session<PlayerData>},
     player_store: skilift.Store<PlayerData>,
 
