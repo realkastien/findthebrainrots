@@ -5,12 +5,8 @@ local character_scripts = ServerStorage.Character
 local scripts = {}
 
 for _, script in character_scripts:GetChildren() do 
-    if not script:IsA("ModuleScript") then
+    if not script:IsA("ModuleScript") and not script:IsA("Script") then
         continue
-    end
-
-    if not script:IsA("Script") then
-        continue 
     end
 
     script.Enabled = false 
