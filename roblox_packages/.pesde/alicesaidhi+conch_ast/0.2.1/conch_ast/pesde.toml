@@ -1,0 +1,15 @@
+name = "alicesaidhi/conch_ast"
+version = "0.2.1"
+private = false
+includes = ["src/**", "pesde.toml"]
+
+[target]
+environment = "roblox"
+lib = "src/lib.luau"
+build_files = ["src"]
+
+[dependencies.types]
+name = "alicesaidhi/conch_types"
+version = "^0.2.1"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"

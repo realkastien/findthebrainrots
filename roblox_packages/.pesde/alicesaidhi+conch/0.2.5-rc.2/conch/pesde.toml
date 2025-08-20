@@ -1,0 +1,39 @@
+name = "alicesaidhi/conch"
+version = "0.2.5-rc.2"
+private = false
+includes = ["src/**", "pesde.toml"]
+
+[target]
+environment = "roblox"
+lib = "src/lib.luau"
+build_files = ["src"]
+
+[dependencies.ast]
+name = "alicesaidhi/conch_ast"
+version = "^0.2.1-rc.2"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"
+
+[dependencies.compiler]
+name = "alicesaidhi/conch_compiler"
+version = "^0.2.2"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"
+
+[dependencies.intel]
+name = "alicesaidhi/conch_analysis"
+version = "^0.2.2-rc.2"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"
+
+[dependencies.types]
+name = "alicesaidhi/conch_types"
+version = "^0.2.1"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"
+
+[dependencies.vm]
+name = "alicesaidhi/conch_vm"
+version = "^0.2.1"
+index = "https://github.com/daimond113/pesde-index"
+target = "roblox"

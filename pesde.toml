@@ -1,0 +1,29 @@
+name = "creatorhub/poopgame"
+version = "0.1.0"
+license = "MIT"
+
+[target]
+environment = "roblox"
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
+[wally_indices]
+default = "https://github.com/UpliftGames/wally-index"
+
+[scripts]
+roblox_sync_config_generator = ".pesde/scripts/roblox_sync_config_generator.luau"
+sourcemap_generator = ".pesde/scripts/sourcemap_generator.luau"
+
+[dev_dependencies]
+scripts = { name = "pesde/scripts_rojo", version = "^0.1.0", target = "lune" }
+rojo = { name = "pesde/rojo", version = "^7.4.4", target = "lune" }
+
+[dependencies]
+ui_labs = { wally = "pepeeltoro41/ui-labs", version = "^2.3.8" }
+signal = { wally = "stravant/goodsignal", version = "^0.3.0" }
+conch = { name = "alicesaidhi/conch", version = "^0.2.5-rc.2" }
+skilift = { name = "alicesaidhi/skilift", version = "^0.3.1" }
+zoneplus = { wally = "mattschrubb/zoneplus", version = "^3.2.0" }
+charm = { wally = "littensy/charm", version = "^0.10.0" }
+matter = { wally = "matter-ecs/matter", version = "^0.8.5" }
+fusion = { wally = "elttob/fusion", version = "^0.3.0" }

@@ -1,0 +1,345 @@
+-- Main networking configuration for Find The Brainrots
+-- This file defines all network events for the match-based game
+
+option Casing = Pascal
+option TypesOutput = "../build/Types.luau"
+option ServerOutput = "../build/Server.luau" 
+option ClientOutput = "../build/Client.luau"
+
+-- Custom types for game data
+struct PlayerRole {
+    role_type: string, -- "investigador" or "brainrot"
+    chances_remaining: u8?
+}
+
+struct MatchData {
+    match_id: string,
+    duration: u16,
+    investigador_count: u8,
+    brainrot_count: u8,
+    npc_count: u16
+}
+
+struct PlayerStats {
+    player_id: string,
+    kills: u8,
+    deaths: u8,
+    npcs_killed: u8,
+    players_found: u8
+}
+
+struct CountdownData {
+    duration: u8,
+    match_type: string?
+}
+
+struct TaskData {
+    task_id: string,
+    task_type: string,
+    description: string,
+    reward_points: u16?
+}
+
+struct BrainrotData {
+    target_player_id: string,
+    finder_player_id: string,
+    position: vector?
+}
+
+struct KillData {
+    killer_id: string,
+    target_id: string,
+    target_type: string, -- "player" or "npc"
+    was_correct: boolean,
+    position: vector?
+}
+
+struct MatchResult {
+    winning_team: string, -- "investigadors" or "brainrots"
+    duration: u16,
+    final_stats: PlayerStats[]
+}
+
+-- Match Management Events
+event MatchStarted {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: MatchData
+}
+
+event MatchEnded {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: MatchResult
+}
+
+event MatchCountdownStarted {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: CountdownData
+}
+
+event MatchCountdownCancelled {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- reason for cancellation
+}
+
+event MatchPaused {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- reason for pause
+}
+
+event MatchResumed {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- resume message
+}
+
+-- Player Role Events
+event PlayerRoleAssigned {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: PlayerRole
+}
+
+event PlayerRoleChanged {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: PlayerRole
+}
+
+event InvestigadorChancesUpdated {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: u8 -- remaining chances
+}
+
+-- Player Action Events
+event PlayerKillAttempt {
+    From: Client,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- target player/npc id
+}
+
+event PlayerKilled {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: KillData
+}
+
+event BrainrotFound {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: BrainrotData
+}
+
+event PlayerEliminated {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, string) -- player_id, reason
+}
+
+event PlayerRevived {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- player_id
+}
+
+-- Task System Events
+event TaskAssigned {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: TaskData
+}
+
+event TaskFinished {
+    From: Client,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- task_id
+}
+
+event TaskCompleted {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, TaskData) -- player_id, completed_task
+}
+
+event TaskFailed {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: (string, string) -- task_id, reason
+}
+
+-- Game State Events
+event GameStateChanged {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- new_state: "lobby", "countdown", "playing", "ended"
+}
+
+event PlayerJoinedMatch {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- player_id
+}
+
+event PlayerLeftMatch {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- player_id
+}
+
+-- Communication Events
+event ChatMessage {
+    From: Client,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- message
+}
+
+event ChatMessageBroadcast {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, string) -- player_id, message
+}
+
+event SystemMessage {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- system_message
+}
+
+-- Statistics and Leaderboard Events
+event PlayerStatsUpdated {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: PlayerStats
+}
+
+event LeaderboardUpdated {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: PlayerStats[] -- sorted leaderboard
+}
+
+-- Power-ups and Items Events
+event PowerUpSpawned {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, vector, string) -- item_id, position, item_type
+}
+
+event PowerUpCollected {
+    From: Client,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- item_id
+}
+
+event PowerUpUsed {
+    From: Client,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- item_type
+}
+
+event PowerUpActivated {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, string) -- player_id, item_type
+}
+
+-- Zone and Map Events
+event ZoneRestricted {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, vector, f32) -- zone_id, center_position, radius
+}
+
+event ZoneUnrestricted {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- zone_id
+}
+
+event PlayerEnteredZone {
+    From: Client,
+    Type: Unreliable,
+    Call: SingleAsync,
+    Data: string -- zone_id
+}
+
+event PlayerExitedZone {
+    From: Client,
+    Type: Unreliable,
+    Call: SingleAsync,
+    Data: string -- zone_id
+}
+
+-- NPC Management Events
+event NpcSpawned {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, vector, string) -- npc_id, position, npc_type
+}
+
+event NpcDestroyed {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: string -- npc_id
+}
+
+event NpcBehaviorChanged {
+    From: Server,
+    Type: Reliable,
+    Call: ManyAsync,
+    Data: (string, string) -- npc_id, new_behavior
+}
+
+-- Error and Debug Events
+event GameError {
+    From: Server,
+    Type: Reliable,
+    Call: SingleAsync,
+    Data: string -- error_message
+}
+
+event DebugInfo {
+    From: Server,
+    Type: Unreliable,
+    Call: SingleAsync,
+    Data: string -- debug_data
+}

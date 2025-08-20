@@ -1,0 +1,25 @@
+name = "alicesaidhi/skilift"
+version = "0.3.1"
+description = "Lockless DataStore library"
+license = "MIT"
+authors = ["alicesaidhi"]
+repository = "https://github.com/alicesaidhi/skilift"
+private = false
+includes = ["src/**", "LICENSE", "README.md", "pesde.toml"]
+
+[target]
+environment = "roblox"
+lib = "src/init.luau"
+build_files = ["src"]
+
+[dev_dependencies.rojo]
+name = "pesde/rojo"
+version = "^7.4.4"
+index = "https://github.com/pesde-pkg/index"
+target = "lune"
+
+[dev_dependencies.scripts]
+name = "pesde/scripts_rojo"
+version = "^0.1.0"
+index = "https://github.com/pesde-pkg/index"
+target = "lune"

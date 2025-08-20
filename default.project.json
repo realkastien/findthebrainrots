@@ -1,0 +1,66 @@
+{
+  "name": "PoopGame",
+  "emitLegacyScripts": false,
+  "tree": {
+    "$className": "DataModel",    
+    "ReplicatedFirst": {
+      "$ignoreUnknownInstances": true,
+
+      "Config": {
+        "$path": "src/config"
+      },
+
+      "Interface": {
+        "$path": "src/interface"
+      }
+    },
+
+    "ReplicatedStorage": {
+      "$ignoreUnknownInstances": true,
+
+      "Assets": {
+        "$ignoreUnknownInstances": true,
+        "$path": "assets/client"
+      },
+
+      "Network": {
+        "$path": "network/build"
+      },
+      "Packages": {
+        "$path": "roblox_packages"
+      },
+
+      "Shared": {
+        "$path": "src/shared"
+      },      
+      "Client": {
+        "$path": "src/client"
+      }
+    },    
+    "ServerScriptService": {
+      "$ignoreUnknownInstances": true,
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+
+    "ServerStorage": {
+      "$ignoreUnknownInstances": true,
+      "Assets": {
+        "$ignoreUnknownInstances": true,
+        "$path": "assets/server"
+      },
+
+      "Character": {
+        "$path": "src/character"
+      }
+    },
+
+    "SoundService": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    }
+  }
+}
